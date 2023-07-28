@@ -57,9 +57,16 @@ When /^(?:|I )follow "([^"]*)"$/ do |link|
   click_link(link)
 end
 
+# features/step_definitions/web_steps.rb
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
-  fill_in(field, :with => value)
+  case field.downcase
+  when 'director'
+    fill_in 'movie_director', with: value
+  else
+    fill_in field, with: value
+  end
 end
+
 
 When /^(?:|I )fill in "([^"]*)" for "([^"]*)"$/ do |value, field|
   fill_in(field, :with => value)
@@ -103,6 +110,8 @@ When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"$/ do |path, field|
 end
 
 Then /^(?:|I )should see "([^"]*)"$/ do |text|
+
+  # The rest of the code to check the presence of the text (no changes needed here)
   if page.respond_to? :should
     page.should have_content(text)
   else
